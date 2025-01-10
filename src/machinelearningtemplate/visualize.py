@@ -1,31 +1,35 @@
-import torch
+import os
+from pathlib import Path
+
 import matplotlib.pyplot as plt
+import torch
+import typer
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
-from model import MyAwesomeModel
+from train import DEVICE
 
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
-DEFAULT_MODEL_CHECKPOINT = "models/model.pth"
+from machinelearningtemplate.data import corrupt_mnist
+from machinelearningtemplate.model import FashionClassifierModel
 
-def visualize(model_checkpoint: str = DEFAULT_MODEL_CHECKPOINT, figure_name: str = "embeddings.png") -> None:
+
+def visualize(model_checkpoint: str, figure_name: str = "embeddings.png") -> None:
     """Visualize model predictions."""
-    model = MyAwesomeModel().to(DEVICE)
-    model.load_state_dict(torch.load(model_checkpoint, map_location=DEVICE))
+    model_path = Path("./models") / model_checkpoint
+    model = FashionClassifierModel().to(DEVICE)
+    model_path = Path("./models") / model_checkpoint
+    model.load_state_dict(torch.load(model_path))
     model.eval()
     model.fc = torch.nn.Identity()
 
-    test_images = torch.load("data/processed/test_images.pt").to(DEVICE)
-    test_target = torch.load("data/processed/test_target.pt").to(DEVICE)
-    test_dataset = torch.utils.data.TensorDataset(test_images, test_target)
+    _, test_dataset = corrupt_mnist()
 
     embeddings, targets = [], []
     with torch.inference_mode():
         for batch in torch.utils.data.DataLoader(test_dataset, batch_size=32):
             images, target = batch
-            images = images.to(DEVICE)
             predictions = model(images)
-            embeddings.append(predictions.cpu())
-            targets.append(target.cpu())
+            embeddings.append(predictions)
+            targets.append(target)
         embeddings = torch.cat(embeddings).numpy()
         targets = torch.cat(targets).numpy()
 
@@ -35,12 +39,16 @@ def visualize(model_checkpoint: str = DEFAULT_MODEL_CHECKPOINT, figure_name: str
     tsne = TSNE(n_components=2)
     embeddings = tsne.fit_transform(embeddings)
 
+    if not os.path.exists("reports/figures"):
+        os.makedirs("reports/figures")
+    
     plt.figure(figsize=(10, 10))
     for i in range(10):
         mask = targets == i
         plt.scatter(embeddings[mask, 0], embeddings[mask, 1], label=str(i))
     plt.legend()
-    plt.savefig(figure_name)
+    plt.savefig(f"reports/figures/{figure_name}")
+
 
 if __name__ == "__main__":
-    visualize()
+    typer.run(visualize)

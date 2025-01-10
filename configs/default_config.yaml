@@ -1,0 +1,7 @@
+defaults:
+  - model_experiments: model1
+  - train_experiments: exp1
+hydra:
+  job:
+    chdir: false
+version_base: 1.1

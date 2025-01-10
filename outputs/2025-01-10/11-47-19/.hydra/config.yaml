@@ -1,0 +1,18 @@
+model_experiments:
+  params:
+    _target_: __main__.ModelParams
+    num_filters1: 32
+    num_filters2: 64
+    num_filters3: 128
+    dropout_rate: 0.5
+    num_fc_layers: 2
+    ff_hidden_dim: 256
+  model:
+    _target_: __main__.FashionClassifierModel
+    params: ${params}
+_group_:
+  epochs: 1
+  learning_rate: 0.001
+  batch_size: 32
+  seed: 42
+model_checkpoint: models/model.pth

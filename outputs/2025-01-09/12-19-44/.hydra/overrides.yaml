@@ -1,0 +1,2 @@
+- model_checkpoint=models/model.pth
+- experiment=exp2

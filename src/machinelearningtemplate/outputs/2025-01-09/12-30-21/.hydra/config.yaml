@@ -1,0 +1,2 @@
+experiment: default
+model_checkpoint: models/model.pth

@@ -1,3 +1,4 @@
+import os
 import torch
 import typer
 
@@ -27,11 +28,9 @@ def preprocess_data(raw_dir: str, processed_dir: str) -> None:
     train_images = normalize(train_images)
     test_images = normalize(test_images)
 
-    print(f"Train images shape: {train_images.shape}")
-    print(f"Train target shape: {train_target.shape}")
-    print(f"Test images shape: {test_images.shape}")
-    print(f"Test target shape: {test_target.shape}")
 
+    if not os.path.exists(processed_dir):
+        os.makedirs(processed_dir)
     torch.save(train_images, f"{processed_dir}/train_images.pt")
     torch.save(train_target, f"{processed_dir}/train_target.pt")
     torch.save(test_images, f"{processed_dir}/test_images.pt")
@@ -40,10 +39,10 @@ def preprocess_data(raw_dir: str, processed_dir: str) -> None:
 
 def corrupt_mnist() -> tuple[torch.utils.data.Dataset, torch.utils.data.Dataset]:
     """Return train and test datasets for corrupt MNIST."""
-    train_images = torch.load("data/processed/train_images.pt")
-    train_target = torch.load("data/processed/train_target.pt")
-    test_images = torch.load("data/processed/test_images.pt")
-    test_target = torch.load("data/processed/test_target.pt")
+    train_images = torch.load("data/processed/train_images.pt", weights_only=True)
+    train_target = torch.load("data/processed/train_target.pt", weights_only=True)
+    test_images = torch.load("data/processed/test_images.pt", weights_only=True)
+    test_target = torch.load("data/processed/test_target.pt", weights_only=True)
 
     train_set = torch.utils.data.TensorDataset(train_images, train_target)
     test_set = torch.utils.data.TensorDataset(test_images, test_target)

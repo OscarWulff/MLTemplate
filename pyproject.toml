@@ -36,4 +36,8 @@ train = "machinelearningtemplate.train:train"
 evaluate = "machinelearningtemplate.evaluate:evaluate"
 
 [tool.coverage.run]
-omit = ["tests/*"]
+omit = [
+    "tests/*",
+    "*/__init__.py",
+    "*/_remote_module_non_scriptable.py"
+]

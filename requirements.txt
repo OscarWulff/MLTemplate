@@ -8,3 +8,5 @@ hydra-core==1.3.2
 torchvision
 python-dotenv
 wandb
+pytest
+coverage

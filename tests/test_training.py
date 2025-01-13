@@ -18,17 +18,17 @@ def test_training_script(mock_corrupt_mnist, mock_dataloader, mock_wandb_artifac
 
     # Mock DataLoader to return dummy data
     mock_train_loader = MagicMock()
-    mock_train_loader.__iter__.return_value = iter([(torch.rand((1, 28, 28)), torch.tensor(1))])
+    mock_train_loader.__iter__.return_value = iter([(torch.rand((1, 1, 28, 28)), torch.tensor([1]))])
     mock_dataloader.return_value = mock_train_loader
 
     # Mock wandb.init() to return a mock run object
     mock_run = MagicMock()
+    mock_run.__enter__.return_value = mock_run  # Simulate context manager behavior
+    mock_run.__exit__ = MagicMock()  # Simulate context exit
     mock_wandb_init.return_value = mock_run
 
-    # Force the use of CPU for the test
-    with patch("machinelearningtemplate.train.DEVICE", torch.device("cpu")):
-        # Run the training script
-        train()
+    # Run the training script
+    train()
 
     # Check if the model file is saved
     model_path = "models/model.pth"

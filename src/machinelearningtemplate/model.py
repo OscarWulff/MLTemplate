@@ -62,13 +62,25 @@ class FashionClassifierModel(nn.Module):
         """Forward pass."""
         x = torch.relu(self.conv1(x))
         x = torch.max_pool2d(x, 2, 2)
+        print(f"Shape after conv1 and pooling: {x.shape}")
+        
         x = torch.relu(self.conv2(x))
         x = torch.max_pool2d(x, 2, 2)
+        print(f"Shape after conv2 and pooling: {x.shape}")
+        
         x = torch.relu(self.conv3(x))
         x = torch.max_pool2d(x, 2, 2)
-        x = torch.flatten(x, 1)
+        print(f"Shape after conv3 and pooling: {x.shape}")
+        
+        # Correctly flatten the tensor
+        x = x.flatten(start_dim=1)
+        print(f"Shape after flattening: {x.shape}")
+        
         x = self.dropout(x)
         return self.fc(x)
+
+
+
 
 project_root = Path(__file__).resolve().parents[2]  # Adjust as needed
 config_path = str(project_root / "configs")

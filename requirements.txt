@@ -10,3 +10,4 @@ python-dotenv
 wandb
 pytest
 coverage
+pre-commit

@@ -1,9 +1,10 @@
+import os
+from pathlib import Path
+
 import hydra
-from omegaconf import DictConfig
 import torch
 import typer
-from pathlib import Path
-import os
+from omegaconf import DictConfig
 
 from machinelearningtemplate.data import corrupt_mnist
 from machinelearningtemplate.model import FashionClassifierModel, ModelParams
@@ -15,11 +16,9 @@ DEFAULT_MODEL_CHECKPOINT = "models/model.pth"
 # Get the relative path to the config directory
 CONFIG_PATH = "../../configs"
 
+
 @app.command()
-def evaluate(
-    model_checkpoint: str = DEFAULT_MODEL_CHECKPOINT,
-    experiment: str = "default"
-) -> None:
+def evaluate(model_checkpoint: str = DEFAULT_MODEL_CHECKPOINT, experiment: str = "default") -> None:
     """Evaluate a trained model."""
     print("Evaluating like my life depended on it")
     print(f"Model checkpoint: {model_checkpoint}")
@@ -36,7 +35,7 @@ def evaluate(
         num_filters3=cfg.model_experiments.params.num_filters3,
         dropout_rate=cfg.model_experiments.params.dropout_rate,
         num_fc_layers=cfg.model_experiments.params.num_fc_layers,
-        ff_hidden_dim=cfg.model_experiments.params.ff_hidden_dim
+        ff_hidden_dim=cfg.model_experiments.params.ff_hidden_dim,
     )
 
     # Initialize model and load weights
@@ -55,6 +54,7 @@ def evaluate(
         correct += (y_pred.argmax(dim=1) == target).float().sum().item()
         total += target.size(0)
     print(f"Test accuracy: {correct / total}")
+
 
 if __name__ == "__main__":
     app()

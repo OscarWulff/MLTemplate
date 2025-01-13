@@ -1,4 +1,5 @@
 import os
+
 import torch
 import typer
 
@@ -27,7 +28,6 @@ def preprocess_data(raw_dir: str, processed_dir: str) -> None:
 
     train_images = normalize(train_images)
     test_images = normalize(test_images)
-
 
     if not os.path.exists(processed_dir):
         os.makedirs(processed_dir)

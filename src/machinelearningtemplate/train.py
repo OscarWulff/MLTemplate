@@ -1,23 +1,21 @@
 import os
-import torch
+
 import matplotlib.pyplot as plt
+import torch
+
 import wandb
 from machinelearningtemplate.data import corrupt_mnist
 from machinelearningtemplate.model import FashionClassifierModel, ModelParams
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 
+
 def train() -> None:
     """Train a model on MNIST."""
     print("Training day and night")
 
     params = ModelParams(
-        num_filters1=32,
-        num_filters2=64,
-        num_filters3=128,
-        dropout_rate=0.5,
-        num_fc_layers=2,
-        ff_hidden_dim=256
+        num_filters1=32, num_filters2=64, num_filters3=128, dropout_rate=0.5, num_fc_layers=2, ff_hidden_dim=256
     )
 
     # Ensure wandb.init() is properly scoped
@@ -68,7 +66,7 @@ def train() -> None:
         torch.save(model.state_dict(), model_path)
 
         # Log the model as an artifact within the context
-        artifact = wandb.Artifact('fashion_classifier_model', type='model')
+        artifact = wandb.Artifact("fashion_classifier_model", type="model")
         artifact.add_file(model_path)
         run.log_artifact(artifact)  # Use 'run' to ensure it's within context
 

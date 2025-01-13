@@ -10,17 +10,16 @@ from torch import nn
 
 
 @staticmethod
-def create_model_from_model_params_yaml(params: dict) -> 'FashionClassifierModel':
+def create_model_from_model_params_yaml(params: dict) -> "FashionClassifierModel":
     model_params = ModelParams(
         num_filters1=params["num_filters1"],
         num_filters2=params["num_filters2"],
         num_filters3=params["num_filters3"],
         dropout_rate=params["dropout_rate"],
         num_fc_layers=params["num_fc_layers"],
-        ff_hidden_dim=params["ff_hidden_dim"]
+        ff_hidden_dim=params["ff_hidden_dim"],
     )
     return FashionClassifierModel(model_params)
-
 
 
 @dataclass
@@ -32,9 +31,11 @@ class ModelParams:
     num_fc_layers: int = 1
     ff_hidden_dim: int = 256
 
+
 @dataclass
 class Config:
     params: ModelParams
+
 
 class FashionClassifierModel(nn.Module):
     """My awesome model with configurable parameters."""
@@ -63,34 +64,33 @@ class FashionClassifierModel(nn.Module):
         x = torch.relu(self.conv1(x))
         x = torch.max_pool2d(x, 2, 2)
         print(f"Shape after conv1 and pooling: {x.shape}")
-        
+
         x = torch.relu(self.conv2(x))
         x = torch.max_pool2d(x, 2, 2)
         print(f"Shape after conv2 and pooling: {x.shape}")
-        
+
         x = torch.relu(self.conv3(x))
         x = torch.max_pool2d(x, 2, 2)
         print(f"Shape after conv3 and pooling: {x.shape}")
-        
+
         # Correctly flatten the tensor
         x = x.flatten(start_dim=1)
         print(f"Shape after flattening: {x.shape}")
-        
+
         x = self.dropout(x)
         return self.fc(x)
 
 
-
-
 project_root = Path(__file__).resolve().parents[2]  # Adjust as needed
 config_path = str(project_root / "configs")
+
 
 # Update the @hydra.main decorator in model.py
 @hydra.main(config_path=config_path, config_name="default_config.yaml", version_base=None)
 def main(cfg):
     print("Configuration:")
     print(OmegaConf.to_yaml(cfg))
-    
+
     params = cfg.model_experiments.params
     # Usage
     model = create_model_from_model_params_yaml(params)
@@ -102,7 +102,6 @@ def main(cfg):
     dummy_input = torch.randn(1, 1, 28, 28)
     output = model(dummy_input)
     print(f"Output shape: {output.shape}")
-
 
 
 if __name__ == "__main__":

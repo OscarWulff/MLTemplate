@@ -41,7 +41,7 @@ def visualize(model_checkpoint: str, figure_name: str = "embeddings.png") -> Non
 
     if not os.path.exists("reports/figures"):
         os.makedirs("reports/figures")
-    
+
     plt.figure(figsize=(10, 10))
     for i in range(10):
         mask = targets == i

@@ -1,8 +1,11 @@
 import os
+from unittest.mock import MagicMock, patch
+
 import torch
-from unittest.mock import patch, MagicMock
-from machinelearningtemplate.train import train
+
 from machinelearningtemplate.model import FashionClassifierModel, ModelParams
+from machinelearningtemplate.train import train
+
 
 @patch("machinelearningtemplate.train.wandb.init")
 @patch("machinelearningtemplate.train.wandb.log")
@@ -39,12 +42,7 @@ def test_training_script(mock_corrupt_mnist, mock_dataloader, mock_wandb_artifac
 
     # Define model parameters
     params = ModelParams(
-        num_filters1=32,
-        num_filters2=64,
-        num_filters3=128,
-        dropout_rate=0.5,
-        num_fc_layers=2,
-        ff_hidden_dim=256
+        num_filters1=32, num_filters2=64, num_filters3=128, dropout_rate=0.5, num_fc_layers=2, ff_hidden_dim=256
     )
 
     # Create an instance of the model
@@ -58,6 +56,7 @@ def test_training_script(mock_corrupt_mnist, mock_dataloader, mock_wandb_artifac
         assert param_tensor in model_state_dict, f"Missing parameter in state dictionary: {param_tensor}"
 
     print("Training script test passed.")
+
 
 if __name__ == "__main__":
     test_training_script()

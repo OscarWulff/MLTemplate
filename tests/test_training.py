@@ -1,14 +1,20 @@
 import os
 import torch
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from machinelearningtemplate.train import train
 from machinelearningtemplate.model import FashionClassifierModel, ModelParams
 
 @patch("machinelearningtemplate.train.wandb.init")
 @patch("machinelearningtemplate.train.wandb.log")
 @patch("machinelearningtemplate.train.wandb.Artifact")
-def test_training_script(mock_wandb_artifact, mock_wandb_log, mock_wandb_init):
+@patch("machinelearningtemplate.train.corrupt_mnist")
+def test_training_script(mock_corrupt_mnist, mock_wandb_artifact, mock_wandb_log, mock_wandb_init):
     """Test the training script."""
+    # Mock the data loading function
+    mock_train_set = MagicMock()
+    mock_test_set = MagicMock()
+    mock_corrupt_mnist.return_value = (mock_train_set, mock_test_set)
+
     # Run the training script
     train()
 

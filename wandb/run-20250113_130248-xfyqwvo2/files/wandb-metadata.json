@@ -1,0 +1,42 @@
+{
+  "os":  "macOS-14.5-arm64-arm-64bit",
+  "python":  "CPython 3.11.11",
+  "startedAt":  "2025-01-13T12:02:49.163303Z",
+  "program":  "/opt/anaconda3/envs/MLTemplate/bin/train",
+  "git":  {
+    "remote":  "https://github.com/OscarWulff/MLTemplate",
+    "commit":  "7aefea83319bf325a6a9fb75912b02f731cf96ae"
+  },
+  "email":  "Oscar@mandrupsen.dk",
+  "root":  "/Users/oscarmandrupsen/Desktop/MLTemplateOps/MachineLearningTemplate",
+  "host":  "Oscars-MacBook-Pro.local",
+  "executable":  "/opt/anaconda3/envs/MLTemplate/bin/python",
+  "cpu_count":  8,
+  "cpu_count_logical":  8,
+  "disk":  {
+    "/":  {
+      "total":  "494384795648",
+      "used":  "221425664000"
+    },
+    "/System/Volumes/Data":  {
+      "total":  "494384795648",
+      "used":  "221425664000"
+    }
+  },
+  "memory":  {
+    "total":  "17179869184"
+  },
+  "cpu":  {
+    "count":  8,
+    "countLogical":  8
+  },
+  "apple":  {
+    "name":  "Apple M3",
+    "ecpuCores":  4,
+    "pcpuCores":  4,
+    "gpuCores":  10,
+    "memoryGb":  16,
+    "swapTotalBytes":  "2147483648",
+    "ramTotalBytes":  "17179869184"
+  }
+}

@@ -102,6 +102,7 @@ celerybeat.pid
 
 # Data files
 data/
+.env
 
 # VS Code
 .vscode/data/

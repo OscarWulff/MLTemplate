@@ -1,9 +1,13 @@
 import os
 import torch
+from unittest.mock import patch
 from machinelearningtemplate.train import train
 from machinelearningtemplate.model import FashionClassifierModel, ModelParams
 
-def test_training_script():
+@patch("machinelearningtemplate.train.wandb.init")
+@patch("machinelearningtemplate.train.wandb.log")
+@patch("machinelearningtemplate.train.wandb.Artifact")
+def test_training_script(mock_wandb_artifact, mock_wandb_log, mock_wandb_init):
     """Test the training script."""
     # Run the training script
     train()

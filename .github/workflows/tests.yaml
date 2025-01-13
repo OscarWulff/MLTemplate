@@ -36,10 +36,6 @@ jobs:
       - name: Add root directory to PYTHONPATH
         run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)/src" >> $GITHUB_ENV
 
-      - name: Set WANDB_API_KEY environment variable
-        env:
-          WANDB_API_KEY: ${{ secrets.WANDB_API_KEY }}
-
       - name: Run tests & coverage
         run: |
           coverage run -m pytest tests/

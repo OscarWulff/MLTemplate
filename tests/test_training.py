@@ -6,8 +6,9 @@ from machinelearningtemplate.model import FashionClassifierModel, ModelParams
 
 @patch("machinelearningtemplate.train.wandb.init")
 @patch("machinelearningtemplate.train.wandb.log")
+@patch("machinelearningtemplate.train.wandb.log_artifact")
 @patch("machinelearningtemplate.train.wandb.Artifact")
-def test_training_script(mock_wandb_artifact, mock_wandb_log, mock_wandb_init):
+def test_training_script(mock_wandb_artifact, mock_wandb_log_artifact, mock_wandb_log, mock_wandb_init):
     """Test the training script."""
     # Mock the data loading function
     mock_train_set = MagicMock()
@@ -19,6 +20,9 @@ def test_training_script(mock_wandb_artifact, mock_wandb_log, mock_wandb_init):
 
         # Run the training script
         train()
+
+        # Check if wandb.init() was called
+        mock_wandb_init.assert_called_once()
 
         # Check if the model file is saved
         model_path = "models/model.pth"
@@ -48,6 +52,3 @@ def test_training_script(mock_wandb_artifact, mock_wandb_log, mock_wandb_init):
             assert param_tensor in model_state_dict, f"Missing parameter in state dictionary: {param_tensor}"
 
         print("Training script test passed.")
-
-if __name__ == "__main__":
-    test_training_script()

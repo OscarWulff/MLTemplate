@@ -25,8 +25,10 @@ def test_training_script(mock_corrupt_mnist, mock_dataloader, mock_wandb_artifac
     mock_run = MagicMock()
     mock_wandb_init.return_value = mock_run
 
-    # Run the training script
-    train()
+    # Force the use of CPU for the test
+    with patch("machinelearningtemplate.train.DEVICE", torch.device("cpu")):
+        # Run the training script
+        train()
 
     # Check if the model file is saved
     model_path = "models/model.pth"

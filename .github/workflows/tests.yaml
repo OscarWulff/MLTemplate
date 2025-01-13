@@ -33,6 +33,9 @@ jobs:
           pip install -r requirements.txt
           pip list
 
+      - name: Add root directory to PYTHONPATH
+        run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)/src" >> $GITHUB_ENV
+
       - name: Run tests & coverage
         run: |
           coverage run -m pytest tests/

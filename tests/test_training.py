@@ -1,4 +1,3 @@
-import os
 import torch
 from unittest.mock import patch, MagicMock
 from machinelearningtemplate.train import train
@@ -11,9 +10,17 @@ from machinelearningtemplate.model import FashionClassifierModel, ModelParams
 def test_training_script(mock_wandb_artifact, mock_wandb_log_artifact, mock_wandb_log, mock_wandb_init):
     """Test the training script."""
     # Mock the data loading function
-    mock_train_set = MagicMock()
-    mock_test_set = MagicMock()
-    with patch("machinelearningtemplate.train.corrupt_mnist", return_value=(mock_train_set, mock_test_set)):
+    mock_train_set = [torch.rand((1, 28, 28)), torch.tensor(1)]  # Dummy input and label
+    mock_test_set = [torch.rand((1, 28, 28)), torch.tensor(1)]   # Dummy input and label
+    
+    # Mock DataLoader to return dummy data
+    mock_train_loader = MagicMock()
+    mock_train_loader.__iter__.return_value = iter([(torch.rand((1, 28, 28)), torch.tensor(1))])
+    
+    mock_test_loader = MagicMock()
+    mock_test_loader.__iter__.return_value = iter([(torch.rand((1, 28, 28)), torch.tensor(1))])
+
+    with patch("machinelearningtemplate.train.DataLoader", side_effect=[mock_train_loader, mock_test_loader]):
         # Mock wandb.init() to return a mock run object
         mock_run = MagicMock()
         mock_wandb_init.return_value = mock_run
